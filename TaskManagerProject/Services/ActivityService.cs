@@ -9,13 +9,13 @@ namespace TaskManagerProject.Services
 {
     public class ActivityService : IActivityService
     {
-        List <Activity> activities = new List<Activity>();
+        List<Activity> activities = new List<Activity>();
 
         public void CreateActivity(string title, DateTime dueDate, TaskStatusEnum status, string description)
         {
-            Activity activity = new Activity(title, dueDate, status, description);
-
+            Activity activity = new Activity(title, dueDate, description, status);
             activities.Add(activity);
+            TaskManagerProject.Helpers.JsonHelper.Convert(activities, "JsonFileTM.json");
         }
 
         public void DeleteTask()
@@ -27,6 +27,10 @@ namespace TaskManagerProject.Services
         {
             throw new NotImplementedException();
         }
-       
+
+        public static List<Activity> ListActivity()
+        {
+            return TaskManagerProject.Helpers.JsonHelper.Deconvert<List<Activity>>("JsonFileTM.json");
+        }
     }
 }
