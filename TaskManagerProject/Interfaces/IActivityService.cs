@@ -8,9 +8,9 @@ namespace TaskManagerProject.Interfaces
 {
     internal interface IActivityService
     {
-        public void CreateActivity(string title, DateTime dueDate,TaskStatusEnum status, string description);
+        public void CreateActivity( string id,string title, DateTime dueDate,TaskStatusEnum status, string description);
         public void EditTask();
-        public void DeleteTask();
+        public void DeleteTask(string id);
 
     }
 }

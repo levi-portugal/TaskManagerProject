@@ -11,16 +11,34 @@ namespace TaskManagerProject.Services
     {
         List<Activity> activities = new List<Activity>();
 
-        public void CreateActivity(string title, DateTime dueDate, TaskStatusEnum status, string description)
+        public void CreateActivity(string id, string title, DateTime dueDate, TaskStatusEnum status, string description)
         {
-            Activity activity = new Activity(title, dueDate, description, status);
+            ListActivity();
+            
+            Activity activity = new Activity(id, title, dueDate, description, status);
             activities.Add(activity);
             TaskManagerProject.Helpers.JsonHelper.Convert(activities, "JsonFileTM.json");
         }
 
-        public void DeleteTask()
+        public void DeleteTask(string id)
         {
-            throw new NotImplementedException();
+            var idTask = id;
+            foreach (var item in activities)
+            {
+                if (idTask.Equals(item.Id)) 
+                {
+                    activities.Remove(item);
+                    Console.WriteLine("Tarefa removida com sucesso!");
+                }
+                else
+                {
+                    Console.WriteLine("nenhum Id encontrado com este id");
+                }
+            }
+
+            TaskManagerProject.Helpers.JsonHelper.Convert(activities, "JsonFileTM.json");
+
+
         }
 
         public void EditTask()
@@ -28,9 +46,10 @@ namespace TaskManagerProject.Services
             throw new NotImplementedException();
         }
 
-        public static List<Activity> ListActivity()
+        public List<Activity> ListActivity()
         {
-            return TaskManagerProject.Helpers.JsonHelper.Deconvert<List<Activity>>("JsonFileTM.json");
+            activities = TaskManagerProject.Helpers.JsonHelper.Deconvert<List<Activity>>("JsonFileTM.json");
+            return activities;
         }
     }
 }

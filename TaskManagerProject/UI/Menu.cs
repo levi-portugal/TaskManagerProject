@@ -23,6 +23,7 @@ namespace TaskManagerProject.UI
 
         public void ShowMenu()
         {
+            ActivityService.ListActivity();
             while (true)
             {
                 int response;
@@ -74,18 +75,18 @@ namespace TaskManagerProject.UI
             string name = Console.ReadLine();
             Console.Write("Data de vencimento: \n");
             DateTime dueDate = DateTime.Parse(Console.ReadLine());
-            Console.WriteLine("Defina um Status:\n" +
-                "Pending = 1\r\n InProgress = 2\r\n Completed = 3\r\n Canceled = 4\n");
+            Console.WriteLine("Defina um Status:\nPending = 1\nInProgress = 2\nCompleted = 3\nCanceled = 4\n");
             int status = int.Parse(Console.ReadLine());
             Console.Write("descrição: ");
             string description = Console.ReadLine();
-            var id = Guid.NewGuid();
+            var id = Guid.NewGuid().ToString();
 
-            ActivityService.CreateActivity(name, dueDate, TaskStatusEnum.Pending, description );
+            ActivityService.CreateActivity(id, name, dueDate, TaskStatusEnum.Pending, description );
 
             Console.WriteLine("tarefa criada com sucesso!");
             Console.WriteLine("Aperte qualquer tecla para voltar ao menu.");
             Console.ReadKey();
+        
         }
         public void MenuListTasks()
         {
@@ -112,8 +113,12 @@ namespace TaskManagerProject.UI
         public void MenuDeleteTask()
         {
             Console.WriteLine("---Deletar tarefa--\n");
-            Console.WriteLine("Digite o nome da tarefa que deseja excluir: ");
+            Console.WriteLine("Digite o id da tarefa que deseja excluir: ");
+            string id = Console.ReadLine();
 
+            ActivityService.DeleteTask(id);
+
+            Thread.Sleep(90000);
         }
     }
 }
