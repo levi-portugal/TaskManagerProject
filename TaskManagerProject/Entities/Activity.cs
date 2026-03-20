@@ -15,7 +15,7 @@ namespace TaskManagerProject.Entities
         public Category Category { get; set; }
         public string Id { get; set; }
 
-        public Activity(string id, string title, DateTime dueDate,
+        public Activity( string title, DateTime dueDate,
                          string description, TaskStatusEnum status)
         {
             Title = title;

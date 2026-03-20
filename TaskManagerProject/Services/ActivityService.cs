@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using TaskManagerProject.Entities;
@@ -11,34 +12,30 @@ namespace TaskManagerProject.Services
     {
         List<Activity> activities = new List<Activity>();
 
-        public void CreateActivity(string id, string title, DateTime dueDate, TaskStatusEnum status, string description)
+        public void CreateActivity( string title, DateTime dueDate, TaskStatusEnum status, string description)
         {
             ListActivity();
             
-            Activity activity = new Activity(id, title, dueDate, description, status);
+            Activity activity = new Activity( title, dueDate, description, status);
             activities.Add(activity);
             TaskManagerProject.Helpers.JsonHelper.Convert(activities, "JsonFileTM.json");
         }
 
-        public void DeleteTask(string id)
+        public bool DeleteTask(string id)
         {
-            var idTask = id;
-            foreach (var item in activities)
+            Activity activitie = activities.Find(p => p.Id == id);
+
+            if (activitie == null)
             {
-                if (idTask.Equals(item.Id)) 
-                {
-                    activities.Remove(item);
-                    Console.WriteLine("Tarefa removida com sucesso!");
-                }
-                else
-                {
-                    Console.WriteLine("nenhum Id encontrado com este id");
-                }
+                Console.WriteLine("Produto não encontrado.");
+                return false;
             }
 
+            activities.Remove(activitie);
             TaskManagerProject.Helpers.JsonHelper.Convert(activities, "JsonFileTM.json");
 
-
+            Console.WriteLine($"Produto '{activitie.Title}' removido com sucesso.");
+            return true;
         }
 
         public void EditTask()
@@ -48,7 +45,8 @@ namespace TaskManagerProject.Services
 
         public List<Activity> ListActivity()
         {
-            activities = TaskManagerProject.Helpers.JsonHelper.Deconvert<List<Activity>>("JsonFileTM.json");
+            activities = TaskManagerProject.Helpers.JsonHelper.Deconvert<List<Activity>>("JsonFileTM.json")
+                 ?? new List<Activity>();
             return activities;
         }
     }

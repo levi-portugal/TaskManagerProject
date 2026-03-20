@@ -23,7 +23,7 @@ namespace TaskManagerProject.UI
 
         public void ShowMenu()
         {
-            ActivityService.ListActivity();
+            
             while (true)
             {
                 int response;
@@ -79,9 +79,8 @@ namespace TaskManagerProject.UI
             int status = int.Parse(Console.ReadLine());
             Console.Write("descrição: ");
             string description = Console.ReadLine();
-            var id = Guid.NewGuid().ToString();
 
-            ActivityService.CreateActivity(id, name, dueDate, TaskStatusEnum.Pending, description );
+            ActivityService.CreateActivity(name, dueDate, TaskStatusEnum.Pending, description );
 
             Console.WriteLine("tarefa criada com sucesso!");
             Console.WriteLine("Aperte qualquer tecla para voltar ao menu.");
@@ -118,7 +117,8 @@ namespace TaskManagerProject.UI
 
             ActivityService.DeleteTask(id);
 
-            Thread.Sleep(90000);
+            Console.WriteLine("Aperte qualquer tecla para voltar ao menu.");
+            Console.ReadKey();
         }
     }
 }

@@ -39,6 +39,9 @@ namespace TaskManagerProject.Helpers
         {
             string fullPath = GetPath(fileName);
 
+            if (!File.Exists(fullPath))
+                return default;
+
             string jsonString = File.ReadAllText(fullPath);
 
             return JsonSerializer.Deserialize<T>(jsonString);
