@@ -26,5 +26,22 @@ namespace TaskManagerProject.Services
             return categories = TaskManagerProject.Helpers.JsonCategoryHelper.DeconvertCategory<List<Category>>("JsonCategoryFileTM.json");
          
         }
+        public bool DeleteCategory(string id) 
+        {
+
+            Category category = categories.Find(p => p.CategoryId == id);
+
+            if (category == null)
+            {
+                Console.WriteLine("Produto não encontrado.");
+                return false;
+            }
+
+            categories.Remove(category);
+            TaskManagerProject.Helpers.JsonCategoryHelper.ConvertCategory(categories, "JsonFileTM.json");
+
+            Console.WriteLine($"Produto '{category.Name}' removido com sucesso.");
+            return true;
+        }
     }
 }

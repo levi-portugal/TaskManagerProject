@@ -39,6 +39,7 @@ namespace TaskManagerProject.UI
                 Console.WriteLine("* remover tarefa - 4");
                 Console.WriteLine("* Criar categoria - 5");
                 Console.WriteLine("* Listar cateoria - 6");
+                Console.WriteLine("* Excluir cateoria - 7");
                 Console.WriteLine("* Sair - 0");
 
 
@@ -211,6 +212,19 @@ namespace TaskManagerProject.UI
 
             Console.WriteLine("Aperte qualquer tecla para voltar ao menu.");
             Console.ReadKey();
+        }
+        public void MenuDeleteCategory() 
+        {
+            Console.Clear();
+            Console.WriteLine("====Deletar categoria====\n");
+            Console.WriteLine("Digite o Id da categoria que deseja deletar:");
+            string id = Console.ReadLine();
+
+            CategoryService.DeleteCategory(id);
+
+            Console.WriteLine("Aperte qualquer tecla para voltar ao menu.");
+            Console.ReadKey();
+
         }
     }
 }
