@@ -12,20 +12,20 @@ namespace TaskManagerProject.Entities
         public DateTime DateOfCriation { get; set; }
         public DateTime DueDate { get; set; }
         public TaskStatusEnum Status { get; set; }
-        public Category Category { get; set; }
+        public string? CategoryId { get; set; }
         public string Id { get; set; }
 
-        public Activity( string title, DateTime dueDate,
+        public Activity(string title, DateTime dueDate,
                          string description, TaskStatusEnum status)
         {
             Title = title;
             DueDate = dueDate;
             Status = status;
-            //Category = category;
             Description = description;
             Status = status;
             Id = Guid.NewGuid().ToString();
-
+            //CategoryId = categoryId ?? "";
+            //string? categoryId
             if (title == null)
             {
                 throw new FormatException();

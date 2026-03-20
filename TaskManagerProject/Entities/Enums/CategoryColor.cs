@@ -4,10 +4,11 @@ using System.Text;
 
 namespace TaskManagerProject.Entities.Enums
 {
-    internal enum Color
+    public enum CategoryColor
     {
         red = 1,
         blue = 2,
-        green = 3
+        green = 3,
+        black = 4
     }
 }
