@@ -5,11 +5,10 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
 
-namespace TaskManagerProject.Helpers
+namespace TestProject
 {
-    public class JsonCategoryHelper
+    public class teste
     {
-
         public static T DeconvertCategory<T>(string fileName) where T : new()
         {
             string fullPath = GetPath(fileName);
@@ -64,5 +63,8 @@ namespace TaskManagerProject.Helpers
 
             return fullPath;
         }
+
+       
+
     }
 }

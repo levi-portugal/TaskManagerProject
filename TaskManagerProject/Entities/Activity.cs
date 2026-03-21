@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using TaskManagerProject.Entities.Enums;
+using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace TaskManagerProject.Entities
 {
@@ -9,7 +10,7 @@ namespace TaskManagerProject.Entities
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public DateTime DateOfCriation { get; set; }
+        public DateTime DateOfCriation { get; set; } = DateTime.Now;
         public DateTime DueDate { get; set; }
         public TaskStatusEnum Status { get; set; }
         public string? CategoryId { get; set; }
@@ -24,11 +25,10 @@ namespace TaskManagerProject.Entities
             Description = description;
             Status = status;
             Id = Guid.NewGuid().ToString();
-            //CategoryId = categoryId ?? "";
-            //string? categoryId
-            if (title == null)
+            
+            if (string.IsNullOrWhiteSpace(title))
             {
-                throw new FormatException();
+                new FormatException();
             }
 
             if (dueDate < DateOfCriation)

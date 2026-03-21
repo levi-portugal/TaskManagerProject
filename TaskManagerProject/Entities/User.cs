@@ -10,3 +10,4 @@ namespace TaskManagerProject.Entities
         public string Email { get; set; }
     }
 }
+
