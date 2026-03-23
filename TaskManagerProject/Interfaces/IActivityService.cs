@@ -8,8 +8,8 @@ namespace TaskManagerProject.Interfaces
 {
     internal interface IActivityService
     {
-        public void CreateActivity(string title, DateTime dueDate,TaskStatusEnum status, string description);
-        public void EditTask();
+        public void CreateActivity(string title, DateTime dueDate,TaskStatusEnum status, string description, string categoryId);
+        public void EditTask(string id);
         public bool DeleteTask(string id);
 
     }

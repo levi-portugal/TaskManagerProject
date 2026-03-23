@@ -38,8 +38,7 @@ namespace TaskManagerProject.Services
             }
 
             categories.Remove(category);
-            TaskManagerProject.Helpers.JsonCategoryHelper.ConvertCategory(categories, "JsonFileTM.json");
-
+            TaskManagerProject.Helpers.JsonCategoryHelper.ConvertCategory(categories, "JsonCategoryFileTM.json");
             Console.WriteLine($"Produto '{category.Name}' removido com sucesso.");
             return true;
         }

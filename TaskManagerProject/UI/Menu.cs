@@ -61,6 +61,9 @@ namespace TaskManagerProject.UI
                     case 2:
                         ActivityMenu.MenuListTasks();
                         break;
+                    case 3:
+                        ActivityMenu.MenuEditTask();                      
+                        break;
                     case 4:
                         ActivityMenu.MenuDeleteTask();
                         break;
@@ -73,6 +76,7 @@ namespace TaskManagerProject.UI
                     case 7:
                         CategoryMenu.MenuDeleteCategory();
                         break;
+                    
                     case 0:
                         Console.WriteLine("Até Mais!");
                         Environment.Exit(0);

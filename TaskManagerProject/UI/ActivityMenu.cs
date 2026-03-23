@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TaskManagerProject.Entities;
 using TaskManagerProject.Entities.Enums;
 using TaskManagerProject.Helpers;
 using TaskManagerProject.Services;
@@ -29,7 +30,7 @@ namespace TaskManagerProject.UI
                 string name;
                 DateTime dueDate;
                 int status;
-
+                string categoryId;
                 Console.Clear();
                 Console.WriteLine("=== Criar nova tarefa ===\n");
 
@@ -49,17 +50,21 @@ namespace TaskManagerProject.UI
                     throw new FormatException();
                 }
 
-                try
-                {
-                    Console.Write("Data de vencimento: \n");
-                    dueDate = DateTime.Parse(Console.ReadLine());
-                }
-                catch (FormatException ex)
-                {
+                Console.WriteLine("insira o id de uma categoria:");
+                Console.WriteLine("Obs: Caso não queira atribuir ou não tenha uma categoria criada, aperte 'enter'!");
+                categoryId = Console.ReadLine();
 
-                    ExitToMenuHelper.RetryMensage(ex);
-                    continue;
-                }
+                try
+                    {
+                        Console.Write("Data de vencimento: \n");
+                        dueDate = DateTime.Parse(Console.ReadLine());
+                    }
+                    catch (FormatException ex)
+                    {
+
+                        ExitToMenuHelper.RetryMensage(ex);
+                        continue;
+                    }
 
                 try
                 {
@@ -96,7 +101,7 @@ namespace TaskManagerProject.UI
                 Console.WriteLine("descrição: ");
                 string description = Console.ReadLine();
 
-                ActivityService.CreateActivity(name, dueDate, status2, description);
+                ActivityService.CreateActivity(name, dueDate, status2, description, categoryId);
                 run = false;
             }
 
@@ -118,7 +123,7 @@ namespace TaskManagerProject.UI
                 Console.WriteLine($"Descrição: {task.Description}");
                 Console.WriteLine($"Data de criação: {task.DateOfCriation}");
                 Console.WriteLine($"Data de validade: {task.DueDate}");
-                if (task.CategoryId == null)
+                if (string.IsNullOrWhiteSpace(task.CategoryId))
                 {
                     Console.WriteLine("Sem categoria atribuída");
                 }
@@ -128,10 +133,9 @@ namespace TaskManagerProject.UI
                 }
                 Console.WriteLine($"Status: {task.Status}");
                 Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                ExitToMenuHelper.Exit();
             }
+            ExitToMenuHelper.Exit();
 
-            
         }
         public void MenuDeleteTask()
         {
@@ -142,6 +146,14 @@ namespace TaskManagerProject.UI
             ActivityService.DeleteTask(id);
 
             ExitToMenuHelper.Exit();
+        }
+
+        public void MenuEditTask()
+        {
+            Console.WriteLine("====Editar Tarefa====\n");
+            Console.Write("Digite o Id da tarefa que deseja alterar: ");
+            string id = Console.ReadLine();
+            ActivityService.EditTask(id);
         }
 
     }
