@@ -112,30 +112,14 @@ namespace TaskManagerProject.UI
         }
         public void MenuListTasks()
         {
-            Console.Clear();
-            Console.WriteLine("=== Lista de tarefas ===\n");
+            Console.WriteLine("===Listar tarefas===\n");
+            Console.WriteLine("* Listar por categoria - 1\n");
+            Console.WriteLine("* Listar por status - 2\n");
+            Console.WriteLine("* Listar por data de vencimento - 3\n");
 
-            foreach (var task in ActivityService.ListActivity())
-            {
-                Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                Console.WriteLine($"ID: {task.Id}");
-                Console.WriteLine($"Nome da tarefa: {task.Title}");
-                Console.WriteLine($"Descrição: {task.Description}");
-                Console.WriteLine($"Data de criação: {task.DateOfCriation}");
-                Console.WriteLine($"Data de validade: {task.DueDate}");
-                if (string.IsNullOrWhiteSpace(task.CategoryId))
-                {
-                    Console.WriteLine("Sem categoria atribuída");
-                }
-                else
-                {
-                    Console.WriteLine($"Categoria: {task.CategoryId}");
-                }
-                Console.WriteLine($"Status: {task.Status}");
-                Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            }
-            ExitToMenuHelper.Exit();
-
+            Console.Write("Qual deseja ver? ");
+            int response = int.Parse(Console.ReadLine());
+            ActivityService.FilterList(response);
         }
         public void MenuDeleteTask()
         {

@@ -5,6 +5,8 @@ using System.Text;
 using TaskManagerProject.Entities;
 using TaskManagerProject.Entities.Enums;
 using TaskManagerProject.Interfaces;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace TaskManagerProject.Services
 {
@@ -13,11 +15,11 @@ namespace TaskManagerProject.Services
 
         List<Activity> activities = new List<Activity>();
 
-        public void CreateActivity( string title, DateTime dueDate, TaskStatusEnum status, string description, string categoryId)
+        public void CreateActivity(string title, DateTime dueDate, TaskStatusEnum status, string description, string categoryId)
         {
             ListActivity();
-            
-            Activity activity = new Activity( title, dueDate, description, status, categoryId);
+
+            Activity activity = new Activity(title, dueDate, description, status, categoryId);
             activities.Add(activity);
             TaskManagerProject.Helpers.JsonHelper.Convert(activities, "JsonFileTM.json");
         }
@@ -53,12 +55,12 @@ namespace TaskManagerProject.Services
             {
                 case 1:
                     Console.Write("Digite o novo nome da tarefa: ");
-                     string newName = Console.ReadLine();
+                    string newName = Console.ReadLine();
                     activitie.EditName(newName);
                     break;
                 case 2:
                     Console.Write("Digite a nova descrição: ");
-                     string newDescription = Console.ReadLine();
+                    string newDescription = Console.ReadLine();
                     activitie.EditDescription(newDescription);
                     break;
                 case 3:
@@ -80,7 +82,29 @@ namespace TaskManagerProject.Services
                  ?? new List<Activity>();
             return activities;
         }
-       
-      
+
+        public void FilterList(int response)
+        {
+            switch (response)
+            {
+                case 1:
+                    var result = activities.OrderBy(x => x.CategoryId);
+                    foreach (var item in result)
+                    {
+                        Console.WriteLine(item);
+                    }
+                    break;
+                case 2:
+                    result = activities.OrderBy(x => x.Status);
+                    break;
+                case 3:
+                    result = activities.OrderBy(x => x.DueDate);
+                    break;
+                default:
+                    Console.WriteLine("Essa opção não existe!");
+                    break;
+
+            }
+        }
     }
 }
