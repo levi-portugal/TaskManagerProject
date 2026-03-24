@@ -9,7 +9,6 @@ namespace TaskManagerProject.UI
 {
     public class CategoryMenu
     {
-        public CategoryHasTask CategoryHasTask { get; set; }
         public ActivityService ActivityService { get; set; }
         public CategoryService CategoryService { get; set; }
 

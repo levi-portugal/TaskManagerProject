@@ -40,9 +40,9 @@ namespace TaskManagerProject.Services
             }
 
             var activityList = new ActivityService().ListActivity();
-            var activity = activityList.FirstOrDefault(i => i.Id == id);
+            var activity = activityList.FirstOrDefault(i => i.CategoryId == id);
 
-            if (activity == default)
+            if (activity == null)
             {
                 categories.Remove(category);
             }
