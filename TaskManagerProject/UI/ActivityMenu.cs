@@ -116,10 +116,27 @@ namespace TaskManagerProject.UI
             Console.WriteLine("* Listar por categoria - 1\n");
             Console.WriteLine("* Listar por status - 2\n");
             Console.WriteLine("* Listar por data de vencimento - 3\n");
+            Console.WriteLine("* Listar todas as tarefas - 4\n");
 
             Console.Write("Qual deseja ver? ");
             int response = int.Parse(Console.ReadLine());
-            ActivityService.FilterList(response);
+
+            switch (response)
+            {
+                case 1: ActivityService.FilterByCategory();
+                    break;
+                case 2: ActivityService.FilterByStatus();
+                    break;
+                case 3: ActivityService.FilterByDueDate();
+                    break;
+                case 4: ActivityService.GetAll();
+                    break;
+                default:
+                    Console.WriteLine("Essa opção não existe!");
+                    break;
+            }
+
+
         }
         public void MenuDeleteTask()
         {

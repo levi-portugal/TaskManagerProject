@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using TaskManagerProject.Entities;
 using TaskManagerProject.Entities.Enums;
+using TaskManagerProject.Helpers;
 using TaskManagerProject.Interfaces;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 
 namespace TaskManagerProject.Services
 {
@@ -83,28 +84,62 @@ namespace TaskManagerProject.Services
             return activities;
         }
 
-        public void FilterList(int response)
+        public void FilterByCategory()
         {
-            switch (response)
-            {
-                case 1:
-                    var result = activities.OrderBy(x => x.CategoryId);
-                    foreach (var item in result)
-                    {
-                        Console.WriteLine(item);
-                    }
-                    break;
-                case 2:
-                    result = activities.OrderBy(x => x.Status);
-                    break;
-                case 3:
-                    result = activities.OrderBy(x => x.DueDate);
-                    break;
-                default:
-                    Console.WriteLine("Essa opção não existe!");
-                    break;
+            ListActivity();
 
+            var result = activities.OrderBy(x => x.CategoryId).ToList();
+
+            if (result.Count == 0)
+                Console.WriteLine("não encontrado");
+            foreach (var task in result)
+            {
+                ExitToMenuHelper.GetTasks(task);
             }
+            ExitToMenuHelper.Exit();
+        }
+
+        public void FilterByStatus()
+        {
+
+            ListActivity();
+
+            var result = activities.OrderBy(x => x.Status).ToList();
+
+            if (result.Count == 0)
+                Console.WriteLine("não encontrado");
+            foreach (var task in result)
+            {
+                ExitToMenuHelper.GetTasks(task);
+            }
+            ExitToMenuHelper.Exit();
+
+        }
+
+        public void FilterByDueDate()
+        {
+            ListActivity();
+
+            var result = activities
+            .OrderBy(x => Math.Abs((x.DueDate - DateTime.Now).TotalDays))
+            .ToList();
+
+            if (result.Count == 0)
+                Console.WriteLine("não encontrado");
+            foreach (var task in result)
+            {
+                ExitToMenuHelper.GetTasks(task);
+            }
+            ExitToMenuHelper.Exit();
+        }
+
+        public void GetAll()
+        {
+            foreach (var task in ListActivity())
+            {
+                ExitToMenuHelper.GetTasks(task);
+            }
+            ExitToMenuHelper.Exit();
         }
     }
 }
