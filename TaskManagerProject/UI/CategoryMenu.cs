@@ -9,6 +9,7 @@ namespace TaskManagerProject.UI
 {
     public class CategoryMenu
     {
+        public CategoryHasTask CategoryHasTask { get; set; }
         public ActivityService ActivityService { get; set; }
         public CategoryService CategoryService { get; set; }
 
@@ -97,8 +98,9 @@ namespace TaskManagerProject.UI
             Console.WriteLine("Digite o Id da categoria que deseja deletar:");
             string id = Console.ReadLine();
 
-            CategoryService.DeleteCategory(id);
-
+            
+                CategoryService.DeleteCategory(id);
+            
             ExitToMenuHelper.Exit();
 
         }

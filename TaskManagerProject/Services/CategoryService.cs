@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using TaskManagerProject.Entities;
 using TaskManagerProject.Entities.Enums;
 using TaskManagerProject.Interfaces;
+using TaskManagerProject.Services;
 
 namespace TaskManagerProject.Services
 {
     public class CategoryService : ICategoryService
     {
+
         List<Category> categories = new List<Category>();
 
         public void CreateCategory(string name, CategoryColor categoryColor)
@@ -24,9 +27,8 @@ namespace TaskManagerProject.Services
         public List<Category> ListCategory()
         {
             return categories = TaskManagerProject.Helpers.JsonCategoryHelper.DeconvertCategory<List<Category>>("JsonCategoryFileTM.json");
-         
         }
-        public bool DeleteCategory(string id) 
+        public bool DeleteCategory(string id)
         {
 
             Category category = categories.Find(p => p.CategoryId == id);
@@ -37,10 +39,29 @@ namespace TaskManagerProject.Services
                 return false;
             }
 
-            categories.Remove(category);
-            TaskManagerProject.Helpers.JsonCategoryHelper.ConvertCategory(categories, "JsonCategoryFileTM.json");
+            var activityList = new ActivityService().ListActivity();
+            var activity = activityList.FirstOrDefault(i => i.Id == id);
+
+            if (activity == default)
+            {
+                categories.Remove(category);
+            }
+            else
+            {
+                Console.WriteLine("Não é permitido excluir uma categoria com tarefas vinculadas!");
+                return false;
+            }
+
+
+
+                TaskManagerProject.Helpers.JsonCategoryHelper.ConvertCategory(categories, "JsonCategoryFileTM.json");
             Console.WriteLine($"Produto '{category.Name}' removido com sucesso.");
             return true;
         }
+
+
+        
+
     }
 }
+

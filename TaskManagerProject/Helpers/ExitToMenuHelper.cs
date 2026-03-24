@@ -23,22 +23,23 @@ namespace TaskManagerProject.Helpers
         public static void GetTasks(Activity task)
         {
           
-                Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                Console.WriteLine($"ID: {task.Id}");
-                Console.WriteLine($"Nome da tarefa: {task.Title}");
-                Console.WriteLine($"Descrição: {task.Description}");
-                Console.WriteLine($"Data de criação: {task.DateOfCriation}");
-                Console.WriteLine($"Data de validade: {task.DueDate}");
-                if (string.IsNullOrWhiteSpace(task.CategoryId))
-                {
-                    Console.WriteLine("Sem categoria atribuída");
-                }
-                else
-                {
-                    Console.WriteLine($"Categoria: {task.CategoryId}");
-                }
-                Console.WriteLine($"Status: {task.Status}");
-                Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            Console.WriteLine($"ID: {task.Id}");
+            Console.WriteLine($"Nome da tarefa: {task.Title}");
+            Console.WriteLine($"Descrição: {task.Description}");
+            Console.WriteLine($"Data de criação: {task.DateOfCriation}");
+            Console.WriteLine($"Data de validade: {task.DueDate}");
+            Console.WriteLine($"Usuário atribuido: {task.UserId}");
+             if (string.IsNullOrWhiteSpace(task.CategoryId))
+             {
+                 Console.WriteLine("Sem categoria atribuída");
+             }
+             else
+             {
+                 Console.WriteLine($"Categoria: {task.CategoryId}");
+             }
+             Console.WriteLine($"Status: {task.Status}");
+             Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
            
         }
     }

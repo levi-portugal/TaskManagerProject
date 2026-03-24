@@ -31,6 +31,7 @@ namespace TaskManagerProject.UI
                 DateTime dueDate;
                 int status;
                 string categoryId;
+                string userId;
                 Console.Clear();
                 Console.WriteLine("=== Criar nova tarefa ===\n");
 
@@ -47,7 +48,8 @@ namespace TaskManagerProject.UI
 
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    throw new FormatException();
+                    Console.WriteLine("erro: Não é perimitido criar uma tarefa sem nome atribuido!");
+                    break;
                 }
 
                 Console.WriteLine("insira o id de uma categoria:");
@@ -66,6 +68,12 @@ namespace TaskManagerProject.UI
                         continue;
                     }
 
+                if (dueDate < DateTime.Now)
+                {
+                    Console.WriteLine("erro: Não é perimitido criar uma tarefa Com data de vencimento no passado!");
+                    break;
+
+                }
                 try
                 {
                     Console.WriteLine("Defina um Status:\nPending = 1\nInProgress = 2\nCompleted = 3\nCanceled = 4\n");
@@ -101,12 +109,16 @@ namespace TaskManagerProject.UI
                 Console.WriteLine("descrição: ");
                 string description = Console.ReadLine();
 
-                ActivityService.CreateActivity(name, dueDate, status2, description, categoryId);
+                Console.WriteLine("insira o id de um usuário:");
+                Console.WriteLine("Obs: Caso não queira atribuir ou não tenha um usuário criado, aperte 'enter'!");
+                userId = Console.ReadLine();
+
+                ActivityService.CreateActivity(name, dueDate, status2, description, categoryId, userId);
+                Console.WriteLine("tarefa criada com sucesso!\n");
                 run = false;
             }
 
 
-            Console.WriteLine("tarefa criada com sucesso!\n");
             ExitToMenuHelper.Exit();
 
         }
@@ -117,6 +129,7 @@ namespace TaskManagerProject.UI
             Console.WriteLine("* Listar por status - 2\n");
             Console.WriteLine("* Listar por data de vencimento - 3\n");
             Console.WriteLine("* Listar todas as tarefas - 4\n");
+            Console.WriteLine("* Tarefas atrasadas - 5\n");
 
             Console.Write("Qual deseja ver? ");
             int response = int.Parse(Console.ReadLine());
@@ -130,6 +143,8 @@ namespace TaskManagerProject.UI
                 case 3: ActivityService.FilterByDueDate();
                     break;
                 case 4: ActivityService.GetAll();
+                    break;
+                case 5: ActivityService.DelayedActivities();
                     break;
                 default:
                     Console.WriteLine("Essa opção não existe!");

@@ -17,10 +17,11 @@ namespace TaskManagerProject.Entities
         public DateTime DueDate { get; set; }
         public TaskStatusEnum Status { get; set; }
         public string? CategoryId { get; set; }
+        public string? UserId { get; set; }
         public string Id { get; set; }
 
         public Activity(string title, DateTime dueDate,
-                         string description, TaskStatusEnum status, string? categoryId)
+                         string description, TaskStatusEnum status, string? categoryId, string? userId)
         {
             Title = title;
             DueDate = dueDate;
@@ -30,6 +31,7 @@ namespace TaskManagerProject.Entities
             DateOfCriation = DateTime.Now;
             Id = Guid.NewGuid().ToString();
             CategoryId = categoryId;
+            UserId = userId;
 
             if (string.IsNullOrWhiteSpace(title))
             {
@@ -45,6 +47,7 @@ namespace TaskManagerProject.Entities
             {
                 throw new ArgumentException();
             }
+           
         }
 
         [JsonConstructor]

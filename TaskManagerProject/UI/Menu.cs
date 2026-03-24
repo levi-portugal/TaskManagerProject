@@ -16,15 +16,17 @@ namespace TaskManagerProject.UI
 
         public ActivityService ActivityService { get; set; }
         public CategoryService CategoryService { get; set; }
+        public UserService UserService { get; set; }
 
         public CategoryMenu CategoryMenu { get; set; }
         public ActivityMenu ActivityMenu { get; set; }
-
+        public UserMenu UserMenu { get; set; }
 
         public Menu()
         {
            ActivityMenu = new ActivityMenu();
            CategoryMenu = new CategoryMenu();
+           UserMenu = new UserMenu();
         }
 
         public void ShowMenu()
@@ -44,6 +46,7 @@ namespace TaskManagerProject.UI
                 Console.WriteLine("* Criar categoria - 5");
                 Console.WriteLine("* Listar cateoria - 6");
                 Console.WriteLine("* Excluir cateoria - 7");
+                Console.WriteLine("* Usuários - 8");
                 Console.WriteLine("* Sair - 0");
 
 
@@ -75,6 +78,9 @@ namespace TaskManagerProject.UI
                         break;
                     case 7:
                         CategoryMenu.MenuDeleteCategory();
+                        break;
+                    case 8:
+                        UserMenu.ShowUserMenu();
                         break;
                     
                     case 0:

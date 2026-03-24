@@ -16,11 +16,11 @@ namespace TaskManagerProject.Services
 
         List<Activity> activities = new List<Activity>();
 
-        public void CreateActivity(string title, DateTime dueDate, TaskStatusEnum status, string description, string categoryId)
+        public void CreateActivity(string title, DateTime dueDate, TaskStatusEnum status, string description, string categoryId, string userId)
         {
             ListActivity();
-
-            Activity activity = new Activity(title, dueDate, description, status, categoryId);
+            
+            Activity activity = new Activity(title, dueDate, description, status, categoryId, userId);
             activities.Add(activity);
             TaskManagerProject.Helpers.JsonHelper.Convert(activities, "JsonFileTM.json");
         }
@@ -34,7 +34,6 @@ namespace TaskManagerProject.Services
                 Console.WriteLine("Produto não encontrado.");
                 return false;
             }
-
             activities.Remove(activitie);
             TaskManagerProject.Helpers.JsonHelper.Convert(activities, "JsonFileTM.json");
 
@@ -89,7 +88,11 @@ namespace TaskManagerProject.Services
             ListActivity();
 
             var result = activities.OrderBy(x => x.CategoryId).ToList();
+            ShowActivities(result);
+        }
 
+        private static void ShowActivities(List<Activity> result)
+        {
             if (result.Count == 0)
                 Console.WriteLine("não encontrado");
             foreach (var task in result)
@@ -106,13 +109,7 @@ namespace TaskManagerProject.Services
 
             var result = activities.OrderBy(x => x.Status).ToList();
 
-            if (result.Count == 0)
-                Console.WriteLine("não encontrado");
-            foreach (var task in result)
-            {
-                ExitToMenuHelper.GetTasks(task);
-            }
-            ExitToMenuHelper.Exit();
+            ShowActivities(result);
 
         }
 
@@ -123,14 +120,22 @@ namespace TaskManagerProject.Services
             var result = activities
             .OrderBy(x => Math.Abs((x.DueDate - DateTime.Now).TotalDays))
             .ToList();
+          
+            ShowActivities(result);
 
-            if (result.Count == 0)
-                Console.WriteLine("não encontrado");
-            foreach (var task in result)
-            {
-                ExitToMenuHelper.GetTasks(task);
-            }
-            ExitToMenuHelper.Exit();
+
+        }
+
+        public void DelayedActivities()
+        {
+            Console.WriteLine("=== Tarefas atrsadas ===");
+            ListActivity();
+
+            var result = activities
+            .Where(x => (x.DueDate < DateTime.Now && x.Status != TaskStatusEnum.Completed))
+            .ToList();
+
+            ShowActivities(result);
         }
 
         public void GetAll()
@@ -141,5 +146,7 @@ namespace TaskManagerProject.Services
             }
             ExitToMenuHelper.Exit();
         }
+
+        
     }
 }
