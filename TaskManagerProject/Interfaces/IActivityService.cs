@@ -12,5 +12,6 @@ namespace TaskManagerProject.Interfaces
         public void EditTask(string id);
         public bool DeleteTask(string id);
         public List<Activity> ListActivity();
+        void FilterListTasks();
     }
 }

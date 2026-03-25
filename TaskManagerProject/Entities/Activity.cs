@@ -29,18 +29,15 @@ namespace TaskManagerProject.Entities
             Status = status;
             DateOfCriation = DateTime.Now;
             Id = Guid.NewGuid().ToString();
-            CategoryId = categoryId;
             UserId = userId;
 
             if (string.IsNullOrWhiteSpace(title))
             {
-                throw new FormatException();
+                throw new FormatException("Title cannot be empty!"); 
             }
 
-            if (string.IsNullOrWhiteSpace(categoryId))
-            {
-                _ = categoryId == null;
-            }//isso não é pra retornar uma exception,ó comportamento que eu quero é que retorne nulo msm
+            if (!string.IsNullOrWhiteSpace(categoryId))
+                CategoryId = categoryId;
 
             if (dueDate < DateOfCriation)
             {
