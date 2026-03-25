@@ -11,7 +11,6 @@ namespace TaskManagerProject.Services
 {
     public class CategoryService : ICategoryService
     {
-
         List<Category> categories = new List<Category>();
 
         public void CreateCategory(string name, CategoryColor categoryColor)
@@ -21,16 +20,14 @@ namespace TaskManagerProject.Services
             Category category = new Category(name, categoryColor);
             categories.Add(category);
 
-            TaskManagerProject.Helpers.JsonCategoryHelper.ConvertCategory(categories, "JsonCategoryFileTM.json");
+            TaskManagerProject.Helpers.JsonHelper.Convert(categories, "JsonCategoryFileTM.json");
         }
-
         public List<Category> ListCategory()
         {
-            return categories = TaskManagerProject.Helpers.JsonCategoryHelper.DeconvertCategory<List<Category>>("JsonCategoryFileTM.json");
+            return categories = TaskManagerProject.Helpers.JsonHelper.Deconvert<List<Category>>("JsonCategoryFileTM.json");
         }
         public bool DeleteCategory(string id)
         {
-
             Category category = categories.Find(p => p.CategoryId == id);
 
             if (category == null)
@@ -52,16 +49,10 @@ namespace TaskManagerProject.Services
                 return false;
             }
 
-
-
-                TaskManagerProject.Helpers.JsonCategoryHelper.ConvertCategory(categories, "JsonCategoryFileTM.json");
+            TaskManagerProject.Helpers.JsonHelper.Convert(categories, "JsonCategoryFileTM.json");
             Console.WriteLine($"Produto '{category.Name}' removido com sucesso.");
             return true;
         }
-
-
-        
-
     }
 }
 

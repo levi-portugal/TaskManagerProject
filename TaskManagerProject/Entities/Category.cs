@@ -9,7 +9,6 @@ namespace TaskManagerProject.Entities
     {
         public string Name { get; set; }
         public CategoryColor Color { get; set; }
-
         public string CategoryId { get; set; }
 
         public Category() {  }

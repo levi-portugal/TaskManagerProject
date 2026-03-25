@@ -1,4 +1,5 @@
-﻿using System;
+﻿/*
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -44,7 +45,6 @@ namespace TaskManagerProject.Helpers
             }
             catch (Exception ex)
             {
-
                 Console.WriteLine("pode não! tem coisa errada ai");
             }
         }
@@ -66,3 +66,4 @@ namespace TaskManagerProject.Helpers
         }
     }
 }
+*/

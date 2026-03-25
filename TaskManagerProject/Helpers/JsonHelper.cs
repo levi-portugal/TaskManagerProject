@@ -23,14 +23,13 @@ namespace TaskManagerProject.Helpers
                     Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
                 };
 
-                string jsonString = JsonSerializer.Serialize(list);
+                string jsonString = JsonSerializer.Serialize(list, options);
                 File.WriteAllText(fullPath, jsonString);
 
                 Console.WriteLine("Gravado com sucesso!");
             }
             catch (Exception ex)
             {
-
                 Console.WriteLine("pode não! tem coisa errada ai");
             }
         }
@@ -45,7 +44,6 @@ namespace TaskManagerProject.Helpers
             string jsonString = File.ReadAllText(fullPath);
 
             return JsonSerializer.Deserialize<T>(jsonString);
-
         }
 
         public static string GetPath(string fileName)
@@ -63,6 +61,5 @@ namespace TaskManagerProject.Helpers
 
             return fullPath;
         }
-
     } 
 }

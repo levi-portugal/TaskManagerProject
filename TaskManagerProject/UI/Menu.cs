@@ -12,18 +12,16 @@ namespace TaskManagerProject.UI
 {
     public class Menu
     {
-
-
         public ActivityService ActivityService { get; set; }
         public CategoryService CategoryService { get; set; }
         public UserService UserService { get; set; }
-
         public CategoryMenu CategoryMenu { get; set; }
         public ActivityMenu ActivityMenu { get; set; }
         public UserMenu UserMenu { get; set; }
 
         public Menu()
         {
+           ActivityService = new ActivityService();
            ActivityMenu = new ActivityMenu();
            CategoryMenu = new CategoryMenu();
            UserMenu = new UserMenu();
@@ -31,7 +29,6 @@ namespace TaskManagerProject.UI
 
         public void ShowMenu()
         {
-
             while (true)
             {
                 int response;
@@ -49,7 +46,6 @@ namespace TaskManagerProject.UI
                 Console.WriteLine("* Usuários - 8");
                 Console.WriteLine("* Sair - 0");
 
-
                 while (!int.TryParse(Console.ReadLine(), out response))
                 {
                     Console.WriteLine("Valor inválido, tente novamente!");
@@ -62,7 +58,7 @@ namespace TaskManagerProject.UI
                         ActivityMenu.MenuCreateTask();
                         break;
                     case 2:
-                        ActivityMenu.MenuListTasks();
+                        ActivityService.FilterListTasks();
                         break;
                     case 3:
                         ActivityMenu.MenuEditTask();                      
@@ -81,8 +77,7 @@ namespace TaskManagerProject.UI
                         break;
                     case 8:
                         UserMenu.ShowUserMenu();
-                        break;
-                    
+                        break;          
                     case 0:
                         Console.WriteLine("Até Mais!");
                         Environment.Exit(0);

@@ -6,9 +6,9 @@ namespace TaskManagerProject.Entities.Enums
 {
     public enum CategoryColor
     {
-        red = 1,
-        blue = 2,
-        green = 3,
-        black = 4
+        Red = 1,
+        Blue = 2,
+        Green = 3,
+        Black = 4
     }
 }

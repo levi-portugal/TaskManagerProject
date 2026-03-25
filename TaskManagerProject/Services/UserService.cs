@@ -19,12 +19,12 @@ namespace TaskManagerProject.Services
             User user = new User(name, email);
             users.Add(user);
 
-            TaskManagerProject.Helpers.JsonUserHelper.ConvertUser(users, "JsonUserFileTM.json");
+            TaskManagerProject.Helpers.JsonHelper.Convert(users, "JsonUserFileTM.json");
         }
 
         public List<User> ListUser()
         {
-            return users = TaskManagerProject.Helpers.JsonUserHelper.DeconvertUser<List<User>>("JsonUserFileTM.json");          
+            return users = TaskManagerProject.Helpers.JsonHelper.Deconvert<List<User>>("JsonUserFileTM.json");          
         }
     }
 }

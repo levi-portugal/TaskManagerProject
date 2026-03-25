@@ -15,8 +15,7 @@ namespace TaskManagerProject.UI
         }
 
         public void ShowUserMenu()
-        {
-      
+        {     
             Console.WriteLine("==== Usuários ====\n");
             foreach (var user in UserService.ListUser())
             {
@@ -45,7 +44,6 @@ namespace TaskManagerProject.UI
             {
                 CreateUserMenu();
             }
-
         }
 
         public void CreateUserMenu()
@@ -60,7 +58,6 @@ namespace TaskManagerProject.UI
             string email = Console.ReadLine();
 
             UserService.CreateUser(name, email);
-
         }
     }
 }
