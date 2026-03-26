@@ -15,7 +15,6 @@ namespace TaskManagerProject.Entities
             Name = name;
             Email = email;
             UserId = Guid.NewGuid().ToString();
-
         }
     }
 }
