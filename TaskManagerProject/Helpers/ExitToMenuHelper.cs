@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TaskManagerProject.Services;
-using TaskManagerProject.Entities;
+﻿using TaskManagerProject.DTOs.ActivityDTO;
 
 namespace TaskManagerProject.Helpers
 {
@@ -20,7 +16,7 @@ namespace TaskManagerProject.Helpers
             Console.WriteLine("Aperte qualquer tecla para tentar novamente.");
             Console.ReadKey();
         }
-        public static void GetTasks(Activity task)
+        public static void GetTasks(ActivityResponseDto task)
         {
             Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             Console.WriteLine($"ID: {task.Id}");

@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TaskManagerProject.Data.Repositories
+﻿namespace TaskManagerProject.Data.Repositories
 {
-    internal interface IRepository
+    public interface IRepository<T>
     {
+        List<T> GetAll();
+        T GetById(string id);
+        void Create(T entity);
+        void Update(string id, T entity);
+        void Delete(string id);
     }
 }

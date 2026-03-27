@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
+﻿using TaskManagerProject.Data.Repositories;
+using TaskManagerProject.DTOs.ActivityDTO;
 using TaskManagerProject.Entities;
 using TaskManagerProject.Entities.Enums;
 using TaskManagerProject.Helpers;
@@ -13,67 +9,66 @@ namespace TaskManagerProject.Services
 {
     public class ActivityService : IActivityService
     {
+        private readonly IRepository<Activity> _respository;
 
-        List<Activity> activities = new List<Activity>();
-
-        public void CreateActivity(string title, DateTime dueDate, TaskStatusEnum status, string description, string categoryId, string userId)
+        public ActivityService(IRepository<Activity> repository)
         {
-            ListActivity();
-
-            Activity activity = new Activity(title, dueDate, description, status, categoryId, userId);
-            activities.Add(activity);
-            TaskManagerProject.Helpers.JsonHelper.Convert(activities, "JsonFileTM.json");
+            _respository = repository;
         }
 
-        public bool DeleteTask(string id)
+        public void CreateActivity(ActivityRequestDto dto)
         {
-            Activity activitie = activities.Find(p => p.Id == id);
-
-            if (activitie == null)
+            var activity = new Activity
             {
-                Console.WriteLine("Produto não encontrado.");
-                return false;
-            }
-            activities.Remove(activitie);
-            TaskManagerProject.Helpers.JsonHelper.Convert(activities, "JsonFileTM.json");
+                Title = dto.Title,
+                Description = dto.Description,
+                DueDate = dto.DueDate,
+                Status = dto.Status,
+                CategoryId = dto.CategoryId,
+                UserId = dto.UserId
+            };
 
-            Console.WriteLine($"Produto '{activitie.Title}' removido com sucesso.");
-            return true;
+            _respository.Create(activity);
+            //REFATORADO
         }
 
-        public void EditTask(string id)
+        public List<ActivityResponseDto> GetAll()
         {
-            ListActivity();
+            var Activities = _respository.GetAll();
 
-            Activity activitie = activities.Find(p => p.Id == id);
-
-            Console.WriteLine($"O que deseja alterar na tarefa ?");
-            Console.WriteLine("Titulo - 1\nDescrição - 2\nStatus - 3");
-            int response = int.Parse(Console.ReadLine());
-
-            switch (response)
+            return Activities.Select(a => new ActivityResponseDto
             {
-                case 1:
-                    Console.Write("Digite o novo nome da tarefa: ");
-                    string newName = Console.ReadLine();
-                    activitie.EditName(newName);
-                    break;
-                case 2:
-                    Console.Write("Digite a nova descrição: ");
-                    string newDescription = Console.ReadLine();
-                    activitie.EditDescription(newDescription);
-                    break;
-                case 3:
-                    Console.Write("Qual o novo Status que deseja para a tarefa?");
-                    Console.WriteLine("\nPending = 1\nInProgress = 2\nCompleted = 3\nCanceled = 4\n");
-                    int newStatus = int.Parse(Console.ReadLine());
-                    activitie.EditStatus(newStatus);
-                    break;
-                default:
-                    Console.WriteLine("Essa opção não exite!");
-                    break;
-            }
-            TaskManagerProject.Helpers.JsonHelper.Convert(activities, "JsonFileTM.json");
+                Id = a.Id,
+                Title = a.Title,
+                Description = a.Description,
+                DateOfCriation = a.DateOfCriation,
+                DueDate = a.DueDate,
+                Status = a.Status,
+                CategoryId = a.CategoryId,
+                UserId = a.UserId
+            }).ToList();
+            //Refatorado
+        }
+
+        public void DeleteTask(string id)
+        {
+            _respository.Delete(id.ToString());
+            //refatorado
+        }
+
+        public void EditTask(string id, ActivityRequestDto dto)
+        {
+            var activity = new Activity
+            {
+                Title = dto.Title,
+                Description = dto.Description,
+                DueDate = dto.DueDate,
+                Status = dto.Status,
+                CategoryId = dto.CategoryId,
+                UserId = dto.UserId
+            };
+            _respository.Update(id.ToString(),activity);
+            //REFATORADO    
         }
         
         public void FilterListTasks()
@@ -108,18 +103,18 @@ namespace TaskManagerProject.Services
                 default:
                     Console.WriteLine("Essa opção não existe!");
                     break;
-            }         
+            }      
+            //REFATORADO
         }
 
         private void FilterByCategory()
         {
-            ListActivity();
-
-            var result = activities.OrderBy(x => x.CategoryId).ToList();
+            var result = GetAll().OrderBy(x => x.CategoryId).ToList();
             ShowActivities(result);
+            //REFATORADO
         }
 
-        private void ShowActivities(List<Activity> result)
+        private void ShowActivities(List<ActivityResponseDto> result)
         {
             if (result.Count == 0)
                 Console.WriteLine("não encontrado");
@@ -128,54 +123,37 @@ namespace TaskManagerProject.Services
                 ExitToMenuHelper.GetTasks(task);
             }
             ExitToMenuHelper.Exit();
+            //REFATORADO
         }
 
         private void FilterByStatus()
         {
-            ListActivity();
-
-            var result = activities.OrderBy(x => x.Status).ToList();
+            var result = GetAll().OrderBy(x => x.Status).ToList();
 
             ShowActivities(result);
+            //REFATORADO
         }
 
         private void FilterByDueDate()
         {
-            ListActivity();
-
-            var result = activities
+            var result = GetAll()
             .OrderBy(x => Math.Abs((x.DueDate - DateTime.Now).TotalDays))
             .ToList();
 
             ShowActivities(result);
+            //REFATORADO
         }
 
         private void DelayedActivities()
         {
             Console.WriteLine("=== Tarefas atrsadas ===");
-            ListActivity();
 
-            var result = activities
+            var result = GetAll()
             .Where(x => (x.DueDate < DateTime.Now && x.Status != TaskStatusEnum.Completed))
             .ToList();
 
             ShowActivities(result);
-        }
-
-        private void GetAll()
-        {
-            foreach (var task in ListActivity())
-            {
-                ExitToMenuHelper.GetTasks(task);
-            }
-            ExitToMenuHelper.Exit();
-        }
-
-        public List<Activity> ListActivity()
-        {
-             activities = TaskManagerProject.Helpers.JsonHelper.Deconvert<List<Activity>>("JsonFileTM.json")
-                  ?? new List<Activity>();
-             return activities;
+            //REFATORADO
         }
     }   
 }  

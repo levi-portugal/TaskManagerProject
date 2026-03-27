@@ -1,57 +1,55 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+﻿using TaskManagerProject.Data.Repositories;
+using TaskManagerProject.DTOs.CategoryDto;
 using TaskManagerProject.Entities;
-using TaskManagerProject.Entities.Enums;
 using TaskManagerProject.Interfaces;
-using TaskManagerProject.Services;
 
 namespace TaskManagerProject.Services
 {
     public class CategoryService : ICategoryService
     {
-        List<Category> categories = new List<Category>();
+        private readonly IRepository<Category> _repository;
 
-        public void CreateCategory(string name, CategoryColor categoryColor)
+        public CategoryService(IRepository<Category> repository)
         {
-            ListCategory();
-
-            Category category = new Category(name, categoryColor);
-            categories.Add(category);
-
-            TaskManagerProject.Helpers.JsonHelper.Convert(categories, "JsonCategoryFileTM.json");
+            _repository = repository;
         }
-        public List<Category> ListCategory()
-        {
-            return categories = TaskManagerProject.Helpers.JsonHelper.Deconvert<List<Category>>("JsonCategoryFileTM.json");
-        }
-        public bool DeleteCategory(string id)
-        {
-            Category category = categories.Find(p => p.CategoryId == id);
 
-            if (category == null)
+        public void CreateCategory(CategoryRequestDto dto)
+        {
+            var category = new Category
             {
-                Console.WriteLine("Produto não encontrado.");
-                return false;
-            }
+                Name = dto.Name,
+                Color = dto.Color
+            };
 
-            var activityList = new ActivityService().ListActivity();
-            var activity = activityList.FirstOrDefault(i => i.CategoryId == id);
+            _repository.Create(category);
+            //Refatoration
+        }
+        public List<CategoryResponseDto> ListCategory()
+        {
+            var categories = _repository.GetAll();
+            return categories.Select(c => new CategoryResponseDto
+            {
+                CategoryId = c.CategoryId,
+                Name = c.Name,
+                Color = c.Color
+            }).ToList();
+            //Refatorado
+        }
+        public void DeleteCategory(string id)
+        {            
+            var activity = ListCategory().FirstOrDefault(i => i.CategoryId == id);
 
             if (activity == null)
             {
-                categories.Remove(category);
+                _repository.Delete(id.ToString());
             }
             else
             {
                 Console.WriteLine("Não é permitido excluir uma categoria com tarefas vinculadas!");
-                return false;
             }
-
-            TaskManagerProject.Helpers.JsonHelper.Convert(categories, "JsonCategoryFileTM.json");
-            Console.WriteLine($"Produto '{category.Name}' removido com sucesso.");
-            return true;
+            Thread.Sleep(1000);
+            //Refatorado
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TaskManagerProject.Entities.Enums;
+﻿using TaskManagerProject.Entities.Enums;
 
 namespace TaskManagerProject.DTOs.ActivityDTO
 {

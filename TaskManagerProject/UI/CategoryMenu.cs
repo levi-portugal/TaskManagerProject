@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using TaskManagerProject.DTOs.CategoryDto;
 using TaskManagerProject.Entities.Enums;
-using TaskManagerProject.Services;
 using TaskManagerProject.Helpers;
-using System.Reflection.Metadata.Ecma335;
+using TaskManagerProject.Interfaces;
+using TaskManagerProject.Services;
 namespace TaskManagerProject.UI
 {
     public class CategoryMenu
@@ -12,10 +10,11 @@ namespace TaskManagerProject.UI
         public ActivityService ActivityService { get; set; }
         public CategoryService CategoryService { get; set; }
 
-        public CategoryMenu()
+        private readonly ICategoryService _categoryService;
+
+        public CategoryMenu(ICategoryService categoryService)
         {
-            CategoryService = new CategoryService();
-            ActivityService = new ActivityService();
+            _categoryService = categoryService;
         }
 
         public void MenuCreateCategory()
@@ -66,9 +65,16 @@ namespace TaskManagerProject.UI
                         break;
                 }
 
-                CategoryService.CreateCategory(name, categoryColor);
-
+                var newDto = new CategoryRequestDto
+                {
+                    Name = name,
+                    Color = categoryColor
+                };
+                CategoryService.CreateCategory(newDto);
+                Console.WriteLine("Categoria criada com sucesso!");
+                Thread.Sleep(1000);
                 run = false;
+                //Refatorado
             }
         }
         public void MenuListCategories()
@@ -85,6 +91,7 @@ namespace TaskManagerProject.UI
             }
 
             ExitToMenuHelper.Exit();
+            //refatorado, com duvidas
         }
         public void MenuDeleteCategory()
         {
@@ -96,6 +103,7 @@ namespace TaskManagerProject.UI
             CategoryService.DeleteCategory(id);
             
             ExitToMenuHelper.Exit();
+            //refatorado
         }
     }
 }

@@ -1,30 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using TaskManagerProject.DTOs.UserDto;
 using TaskManagerProject.Entities;
 using TaskManagerProject.Interfaces;
-using TaskManagerProject.Helpers;
-using TaskManagerProject.Entities.Enums;
-
+using TaskManagerProject.Data.Repositories;
 namespace TaskManagerProject.Services
 {
     public class UserService : IUserService
     {
-        List<User> users = new List<User>();
+        private readonly IRepository <User> _repository;
 
-        public void CreateUser(string name, string email)
+        public UserService(IRepository<User> repository)
         {
-            ListUser();
-
-            User user = new User(name, email);
-            users.Add(user);
-
-            TaskManagerProject.Helpers.JsonHelper.Convert(users, "JsonUserFileTM.json");
+            _repository = repository;
         }
 
-        public List<User> ListUser()
+        public void CreateUser(UserRequestDto dto)
         {
-            return users = TaskManagerProject.Helpers.JsonHelper.Deconvert<List<User>>("JsonUserFileTM.json");          
+            var user = new User            
+            {
+                Name = dto.Name,
+                Email = dto.Email
+            };
+
+            _repository.Create(user);
+            //Refatorado
+        }
+
+        public List<UserResponseDto> ListUser()
+        {
+            var users = _repository.GetAll();
+
+            return users.Select(u => new UserResponseDto
+            {
+                UserId = u.UserId,
+                Name = u.Name,
+                Email = u.Email
+            }).ToList();
         }
     }
 }

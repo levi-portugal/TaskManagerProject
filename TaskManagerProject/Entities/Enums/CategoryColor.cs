@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TaskManagerProject.Entities.Enums
+﻿namespace TaskManagerProject.Entities.Enums
 {
     public enum CategoryColor
     {
