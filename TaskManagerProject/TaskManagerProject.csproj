@@ -17,6 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Helpers\JsonCategoryHelper.cs" />
+    <Compile Remove="Helpers\JsonUserHelper.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Models\" />
   </ItemGroup>
 

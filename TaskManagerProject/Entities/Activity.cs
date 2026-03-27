@@ -25,29 +25,24 @@ namespace TaskManagerProject.Entities
         {
             Title = title;
             DueDate = dueDate;
-            Status = status;
             Description = description;
             Status = status;
             DateOfCriation = DateTime.Now;
             Id = Guid.NewGuid().ToString();
-            CategoryId = categoryId;
             UserId = userId;
 
             if (string.IsNullOrWhiteSpace(title))
             {
-                new FormatException();
+                throw new FormatException("Title cannot be empty!"); 
             }
 
-            if (string.IsNullOrWhiteSpace(categoryId))
-            {
-                _ = categoryId == null;
-            }
+            if (!string.IsNullOrWhiteSpace(categoryId))
+                CategoryId = categoryId;
 
             if (dueDate < DateOfCriation)
             {
                 throw new ArgumentException();
-            }
-           
+            }        
         }
 
         [JsonConstructor]
@@ -65,25 +60,23 @@ namespace TaskManagerProject.Entities
             Console.WriteLine("Descrição alterada com sucesso!");
         }
         public void EditStatus(int status)
-        {
-            TaskStatusEnum status2;
-
+        {  
             switch (status)
             {
                 case 1:
-                    status2 = TaskStatusEnum.Pending;
+                    Status = TaskStatusEnum.Pending;
                     break;
                 case 2:
-                    status2 = TaskStatusEnum.InProgress;
+                    Status = TaskStatusEnum.InProgress;
                     break;
                 case 3:
-                    status2 = TaskStatusEnum.Completed;
+                    Status = TaskStatusEnum.Completed;
                     break;
                 case 4:
-                    status2 = TaskStatusEnum.Canceled;
+                    Status = TaskStatusEnum.Canceled;
                     break;
                 default:
-                    status2 = TaskStatusEnum.Pending;
+                    Status = TaskStatusEnum.Pending;
                     Console.WriteLine("Esse status não exite, o status foi definido como pendente!");
                     break;
             }
@@ -91,7 +84,4 @@ namespace TaskManagerProject.Entities
             Console.WriteLine("Status alterado com sucesso!");
         }
     }
-
-
-
 }

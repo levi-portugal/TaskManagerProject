@@ -14,7 +14,6 @@ namespace TaskManagerProject.UI
         public ActivityService ActivityService { get; set; }
         public CategoryService CategoryService { get; set; }
 
-
         public ActivityMenu()
         {
             CategoryService = new CategoryService();
@@ -85,7 +84,6 @@ namespace TaskManagerProject.UI
                     continue;
                 }
                
-
                 switch (status)
                 {
                     case 1:
@@ -118,41 +116,10 @@ namespace TaskManagerProject.UI
                 run = false;
             }
 
-
             ExitToMenuHelper.Exit();
 
         }
-        public void MenuListTasks()
-        {
-            Console.WriteLine("===Listar tarefas===\n");
-            Console.WriteLine("* Listar por categoria - 1\n");
-            Console.WriteLine("* Listar por status - 2\n");
-            Console.WriteLine("* Listar por data de vencimento - 3\n");
-            Console.WriteLine("* Listar todas as tarefas - 4\n");
-            Console.WriteLine("* Tarefas atrasadas - 5\n");
-
-            Console.Write("Qual deseja ver? ");
-            int response = int.Parse(Console.ReadLine());
-
-            switch (response)
-            {
-                case 1: ActivityService.FilterByCategory();
-                    break;
-                case 2: ActivityService.FilterByStatus();
-                    break;
-                case 3: ActivityService.FilterByDueDate();
-                    break;
-                case 4: ActivityService.GetAll();
-                    break;
-                case 5: ActivityService.DelayedActivities();
-                    break;
-                default:
-                    Console.WriteLine("Essa opção não existe!");
-                    break;
-            }
-
-
-        }
+       
         public void MenuDeleteTask()
         {
             Console.WriteLine("---Deletar tarefa--\n");
@@ -171,6 +138,5 @@ namespace TaskManagerProject.UI
             string id = Console.ReadLine();
             ActivityService.EditTask(id);
         }
-
     }
 }

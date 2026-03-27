@@ -22,7 +22,6 @@ namespace TaskManagerProject.Helpers
         }
         public static void GetTasks(Activity task)
         {
-          
             Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             Console.WriteLine($"ID: {task.Id}");
             Console.WriteLine($"Nome da tarefa: {task.Title}");
@@ -39,8 +38,8 @@ namespace TaskManagerProject.Helpers
                  Console.WriteLine($"Categoria: {task.CategoryId}");
              }
              Console.WriteLine($"Status: {task.Status}");
-             Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-           
+             Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");      
         }
     }
 }
+//Só pra alterar

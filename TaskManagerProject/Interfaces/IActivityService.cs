@@ -11,6 +11,7 @@ namespace TaskManagerProject.Interfaces
         public void CreateActivity(string title, DateTime dueDate,TaskStatusEnum status, string description, string categoryId, string userId);
         public void EditTask(string id);
         public bool DeleteTask(string id);
-
+        public List<Activity> ListActivity();
+        void FilterListTasks();
     }
 }

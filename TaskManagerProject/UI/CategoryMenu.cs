@@ -12,13 +12,11 @@ namespace TaskManagerProject.UI
         public ActivityService ActivityService { get; set; }
         public CategoryService CategoryService { get; set; }
 
-
         public CategoryMenu()
         {
             CategoryService = new CategoryService();
             ActivityService = new ActivityService();
         }
-
 
         public void MenuCreateCategory()
         {
@@ -51,21 +49,19 @@ namespace TaskManagerProject.UI
 
                 }
 
-
-
                 switch (response)
                 {
                     case 1:
-                        categoryColor = CategoryColor.red;
+                        categoryColor = CategoryColor.Red;
                         break;
                     case 2:
-                        categoryColor = CategoryColor.blue;
+                        categoryColor = CategoryColor.Blue;
                         break;
                     case 3:
-                        categoryColor = CategoryColor.green;
+                        categoryColor = CategoryColor.Green;
                         break;
                     default:
-                        categoryColor = CategoryColor.black;
+                        categoryColor = CategoryColor.Black;
                         Console.WriteLine("Essa cor não existe");
                         break;
                 }
@@ -96,13 +92,10 @@ namespace TaskManagerProject.UI
             Console.WriteLine("====Deletar categoria====\n");
             Console.WriteLine("Digite o Id da categoria que deseja deletar:");
             string id = Console.ReadLine();
-
             
-                CategoryService.DeleteCategory(id);
+            CategoryService.DeleteCategory(id);
             
             ExitToMenuHelper.Exit();
-
         }
-
     }
 }
