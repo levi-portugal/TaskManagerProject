@@ -12,18 +12,23 @@ namespace TaskManagerProject.UI
 {
     public class Menu
     {
-        
-
         public ActivityService ActivityService { get; set; }
+        public CategoryService CategoryService { get; set; }
+        public UserService UserService { get; set; }
+        public CategoryMenu CategoryMenu { get; set; }
+        public ActivityMenu ActivityMenu { get; set; }
+        public UserMenu UserMenu { get; set; }
 
         public Menu()
         {
            ActivityService = new ActivityService();
+           ActivityMenu = new ActivityMenu();
+           CategoryMenu = new CategoryMenu();
+           UserMenu = new UserMenu();
         }
 
         public void ShowMenu()
         {
-            ActivityService.ListActivity();
             while (true)
             {
                 int response;
@@ -31,13 +36,15 @@ namespace TaskManagerProject.UI
                 Console.Clear();
 
                 Console.WriteLine("==== GERENCIADOR DE TAREFAS ====\n");
-                Console.WriteLine("O que deseja fazer?\n");
-                Console.WriteLine("Criar tarefas - 1");
-                Console.WriteLine("Listar Tarefas - 2");
-                Console.WriteLine("Editar tarefas - 3");
-                Console.WriteLine("remover tarefa - 4");
-                Console.WriteLine("Sair - 0");
-
+                Console.WriteLine("* Criar tarefas - 1");
+                Console.WriteLine("* Listar Tarefas - 2");
+                Console.WriteLine("* Editar tarefas - 3");
+                Console.WriteLine("* remover tarefa - 4");
+                Console.WriteLine("* Criar categoria - 5");
+                Console.WriteLine("* Listar cateoria - 6");
+                Console.WriteLine("* Excluir cateoria - 7");
+                Console.WriteLine("* Usuários - 8");
+                Console.WriteLine("* Sair - 0");
 
                 while (!int.TryParse(Console.ReadLine(), out response))
                 {
@@ -48,77 +55,39 @@ namespace TaskManagerProject.UI
                 switch (response)
                 {
                     case 1:
-                        MenuCreateTask();
+                        ActivityMenu.MenuCreateTask();
                         break;
                     case 2:
-                        MenuListTasks();
+                        ActivityService.FilterListTasks();
+                        break;
+                    case 3:
+                        ActivityMenu.MenuEditTask();                      
                         break;
                     case 4:
-                        MenuDeleteTask();
+                        ActivityMenu.MenuDeleteTask();
                         break;
+                    case 5:
+                        CategoryMenu.MenuCreateCategory();
+                        break;
+                    case 6:
+                        CategoryMenu.MenuListCategories();
+                        break;
+                    case 7:
+                        CategoryMenu.MenuDeleteCategory();
+                        break;
+                    case 8:
+                        UserMenu.ShowUserMenu();
+                        break;          
                     case 0:
                         Console.WriteLine("Até Mais!");
                         Environment.Exit(0);
                         break;
                     default:
                         Console.WriteLine("Essa opção não existe!");
+                        Thread.Sleep(800);
                         break;
                 }
             }
-        }
-
-        public void MenuCreateTask()
-        {
-            Console.Clear();
-            Console.WriteLine("=== Criar nova tarefa ===\n");
-            Console.Write("\nNome da tarefa: \n");
-            string name = Console.ReadLine();
-            Console.Write("Data de vencimento: \n");
-            DateTime dueDate = DateTime.Parse(Console.ReadLine());
-            Console.WriteLine("Defina um Status:\nPending = 1\nInProgress = 2\nCompleted = 3\nCanceled = 4\n");
-            int status = int.Parse(Console.ReadLine());
-            Console.Write("descrição: ");
-            string description = Console.ReadLine();
-            var id = Guid.NewGuid().ToString();
-
-            ActivityService.CreateActivity(id, name, dueDate, TaskStatusEnum.Pending, description );
-
-            Console.WriteLine("tarefa criada com sucesso!");
-            Console.WriteLine("Aperte qualquer tecla para voltar ao menu.");
-            Console.ReadKey();
-        
-        }
-        public void MenuListTasks()
-        {
-            Console.Clear();
-            Console.WriteLine("=== Lista de tarefas ===\n");
-
-            foreach(var task in ActivityService.ListActivity()) 
-            {
-                Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                Console.WriteLine($"ID: {task.Id}");
-                Console.WriteLine($"Nome da tarefa: {task.Title}");
-                Console.WriteLine($"Descrição: {task.Description}");
-                Console.WriteLine($"Data de criação: {task.DateOfCriation}");
-                Console.WriteLine($"Data de validade: {task.DueDate}");
-                Console.WriteLine($"Categoria: {task.Category}");
-                Console.WriteLine($"Status: {task.Status}");
-                Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-
-            }
-
-            Console.WriteLine("Aperte qualquer tecla para voltar ao menu.");
-            Console.ReadKey();
-        }
-        public void MenuDeleteTask()
-        {
-            Console.WriteLine("---Deletar tarefa--\n");
-            Console.WriteLine("Digite o id da tarefa que deseja excluir: ");
-            string id = Console.ReadLine();
-
-            ActivityService.DeleteTask(id);
-
-            Thread.Sleep(90000);
         }
     }
 }

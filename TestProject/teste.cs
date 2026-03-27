@@ -1,17 +1,30 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
-using TaskManagerProject.Entities;
 
-namespace TaskManagerProject.Helpers
+namespace TestProject
 {
-    public static class JsonHelper
+    public class teste
     {
-        public static void Convert<T>(List<T> list, string fileName)
+        public static T DeconvertCategory<T>(string fileName) where T : new()
+        {
+            string fullPath = GetPath(fileName);
+
+            if (!File.Exists(fullPath))
+                return new T();
+
+            string jsonString = File.ReadAllText(fullPath);
+
+            if (string.IsNullOrWhiteSpace(jsonString))
+                return new T();
+
+            return JsonSerializer.Deserialize<T>(jsonString) ?? new T();
+        }
+
+        public static void ConvertCategory<T>(List<T> list, string fileName)
         {
             try
             {
@@ -23,27 +36,16 @@ namespace TaskManagerProject.Helpers
                     Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
                 };
 
-                string jsonString = JsonSerializer.Serialize(list, options);
+                string jsonString = JsonSerializer.Serialize(list);
                 File.WriteAllText(fullPath, jsonString);
 
                 Console.WriteLine("Gravado com sucesso!");
             }
             catch (Exception ex)
             {
+
                 Console.WriteLine("pode não! tem coisa errada ai");
             }
-        }
-
-        public static T Deconvert<T>(string fileName)
-        {
-            string fullPath = GetPath(fileName);
-
-            if (!File.Exists(fullPath))
-                return default;
-
-            string jsonString = File.ReadAllText(fullPath);
-
-            return JsonSerializer.Deserialize<T>(jsonString);
         }
 
         public static string GetPath(string fileName)
@@ -56,11 +58,13 @@ namespace TaskManagerProject.Helpers
             {
                 Directory.CreateDirectory(destinationFolder);
             }
-            
+
             string fullPath = Path.Combine(destinationFolder, fileName);
 
             return fullPath;
         }
-    } 
+
+       
+
+    }
 }
-//só pra alterar
