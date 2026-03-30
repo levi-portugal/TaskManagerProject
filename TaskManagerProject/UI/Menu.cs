@@ -6,16 +6,19 @@ namespace TaskManagerProject.UI
 {
     public class Menu
     {
-        public CategoryMenu CategoryMenu { get; set; }
-        public ActivityMenu ActivityMenu { get; set; }
-        public UserMenu UserMenu { get; set; }
+        public CategoryMenu CategoryMenu { get; set; } //Mudar para injeão
+        public ActivityMenu ActivityMenu;// mudar para injeção
+        public UserMenu UserMenu { get; set; } //mudar para injeção
 
         private readonly IActivityService _activityService;
+        private readonly ICategoryService _categoryService;
 
-
-        public Menu(IActivityService activityService)
+        public Menu(IActivityService activityService, ICategoryService categoryService)
         {
             _activityService = activityService;
+            _categoryService = categoryService;
+            ActivityMenu = new ActivityMenu(_activityService);
+            CategoryMenu = new CategoryMenu(_categoryService);
         }
 
         public void ShowMenu()
@@ -49,7 +52,7 @@ namespace TaskManagerProject.UI
                         ActivityMenu.MenuCreateTask();
                         break;
                     case 2:
-                        _activityService.FilterListTasks();
+                        _activityService.FilterListTasks(); //mudar
                         break;
                     case 3:
                         ActivityMenu.MenuEditTask();                      

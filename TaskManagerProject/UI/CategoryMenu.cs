@@ -7,9 +7,6 @@ namespace TaskManagerProject.UI
 {
     public class CategoryMenu
     {
-        public ActivityService ActivityService { get; set; }
-        public CategoryService CategoryService { get; set; }
-
         private readonly ICategoryService _categoryService;
 
         public CategoryMenu(ICategoryService categoryService)
@@ -70,7 +67,7 @@ namespace TaskManagerProject.UI
                     Name = name,
                     Color = categoryColor
                 };
-                CategoryService.CreateCategory(newDto);
+                _categoryService.CreateCategory(newDto);
                 Console.WriteLine("Categoria criada com sucesso!");
                 Thread.Sleep(1000);
                 run = false;
@@ -81,7 +78,7 @@ namespace TaskManagerProject.UI
         {
             Console.Clear();
             Console.WriteLine("=== Lista de Categorias ===\n");
-            foreach (var category in CategoryService.ListCategory())
+            foreach (var category in _categoryService.ListCategory())
             {
                 Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                 Console.WriteLine($"Nome da tarefa: {category.Name}");
@@ -100,7 +97,7 @@ namespace TaskManagerProject.UI
             Console.WriteLine("Digite o Id da categoria que deseja deletar:");
             string id = Console.ReadLine();
             
-            CategoryService.DeleteCategory(id);
+            _categoryService.DeleteCategory(id);
             
             ExitToMenuHelper.Exit();
             //refatorado

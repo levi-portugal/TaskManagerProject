@@ -15,11 +15,8 @@ namespace TaskManagerProject.Services
 
         public void CreateUser(UserRequestDto dto)
         {
-            var user = new User            
-            {
-                Name = dto.Name,
-                Email = dto.Email
-            };
+            var user = new User(dto.Name,dto.Email)         
+            {};
 
             _repository.Create(user);
             //Refatorado

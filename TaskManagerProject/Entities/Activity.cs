@@ -40,11 +40,10 @@ namespace TaskManagerProject.Entities
                 throw new ArgumentException();
             }        
         }
-
-        [JsonConstructor]
+        
         public Activity()
         { }
-
+        
         public void EditName(string name)
         {
             Title = name;

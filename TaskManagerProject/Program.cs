@@ -23,9 +23,9 @@ class Program
         // 3. Registrar o Repositório Genérico para a Entidade Product
         // Note que passamos o nome da coleção "produtos" aqui
         services.AddScoped<IRepository<Activity>>(sp =>
-        new Repository<Activity>(
-        sp.GetRequiredService<MongoContext>(),
-        "Activities"));
+            new Repository<Activity>(
+                sp.GetRequiredService<MongoContext>(),
+                "Activities"));
 
         services.AddScoped<IRepository<Category>>(sp =>
             new Repository<Category>(
@@ -41,6 +41,10 @@ class Program
         services.AddScoped<IActivityService, ActivityService>();
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<Menu>();
+        services.AddScoped<ActivityMenu>();
+        services.AddScoped<CategoryMenu>();
+        services.AddScoped<UserMenu>();
        
         // 5. Construir o Provedor e Iniciar o App
         var serviceProvider = services.BuildServiceProvider();
@@ -52,7 +56,9 @@ class Program
         }
         catch (Exception ex)
         {
-
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Erro ao iniciar a aplicação: {ex.Message}");
+            Console.ResetColor();
         }
     }
 }

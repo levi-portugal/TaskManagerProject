@@ -9,7 +9,6 @@ namespace TaskManagerProject.UI
     public class ActivityMenu
     {
         private readonly IActivityService _activityService;
-        public CategoryService CategoryService { get; set; }//qnd for refatorar o category, tirar
 
         public ActivityMenu(IActivityService activityService)
         {
@@ -113,6 +112,7 @@ namespace TaskManagerProject.UI
                     Title = title,
                     DueDate = dueDate,
                     Status = status2,
+                    Description = description,
                     CategoryId = categoryId,
                     UserId = userId
                 };

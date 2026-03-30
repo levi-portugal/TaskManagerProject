@@ -16,15 +16,13 @@ namespace TaskManagerProject.Services
 
         public void CreateCategory(CategoryRequestDto dto)
         {
-            var category = new Category
-            {
-                Name = dto.Name,
-                Color = dto.Color
-            };
+            var category = new Category (dto.Name, dto.Color)
+            {};
 
             _repository.Create(category);
             //Refatoration
         }
+
         public List<CategoryResponseDto> ListCategory()
         {
             var categories = _repository.GetAll();
@@ -36,18 +34,15 @@ namespace TaskManagerProject.Services
             }).ToList();
             //Refatorado
         }
+
         public void DeleteCategory(string id)
         {            
+            //Bug para resolver aqui
             var activity = ListCategory().FirstOrDefault(i => i.CategoryId == id);
 
-            if (activity == null)
-            {
-                _repository.Delete(id.ToString());
-            }
-            else
-            {
-                Console.WriteLine("Não é permitido excluir uma categoria com tarefas vinculadas!");
-            }
+            
+            _repository.Delete(id.ToString());
+           
             Thread.Sleep(1000);
             //Refatorado
         }

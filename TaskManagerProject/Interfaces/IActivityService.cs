@@ -8,6 +8,6 @@ namespace TaskManagerProject.Interfaces
         public void EditTask(string id, ActivityRequestDto dto);
         public void DeleteTask(string id);
         public List<ActivityResponseDto> GetAll();
-        void FilterListTasks();
+        void FilterListTasks(); //Ver o pq não é pra isso ficar aqui
     }
 }

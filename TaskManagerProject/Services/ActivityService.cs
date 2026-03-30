@@ -1,4 +1,5 @@
-﻿using TaskManagerProject.Data.Repositories;
+﻿using System.Reflection.Metadata.Ecma335;
+using TaskManagerProject.Data.Repositories;
 using TaskManagerProject.DTOs.ActivityDTO;
 using TaskManagerProject.Entities;
 using TaskManagerProject.Entities.Enums;
@@ -18,15 +19,8 @@ namespace TaskManagerProject.Services
 
         public void CreateActivity(ActivityRequestDto dto)
         {
-            var activity = new Activity
-            {
-                Title = dto.Title,
-                Description = dto.Description,
-                DueDate = dto.DueDate,
-                Status = dto.Status,
-                CategoryId = dto.CategoryId,
-                UserId = dto.UserId
-            };
+            var activity = new Activity(dto.Title, dto.DueDate, dto.Description, dto.Status??TaskStatusEnum.Pending, dto.CategoryId, dto.UserId)
+            { };
 
             _respository.Create(activity);
             //REFATORADO
@@ -58,16 +52,38 @@ namespace TaskManagerProject.Services
 
         public void EditTask(string id, ActivityRequestDto dto)
         {
-            var activity = new Activity
+            /*
+            var activity = new Activity(dto.Title, dto.DueDate, dto.Description, dto.Status, dto.CategoryId, dto.UserId)
+            {};
+            */
+
+            var activity = _respository.GetById(id);
+            if (activity != null)
             {
-                Title = dto.Title,
-                Description = dto.Description,
-                DueDate = dto.DueDate,
-                Status = dto.Status,
-                CategoryId = dto.CategoryId,
-                UserId = dto.UserId
-            };
-            _respository.Update(id.ToString(),activity);
+                if (!string.IsNullOrWhiteSpace(dto.Title))
+                    activity.Title = dto.Title;
+
+                if (!string.IsNullOrWhiteSpace(dto.Description))
+                    activity.Description = dto.Description;
+
+                if (activity.DueDate != DateTime.MinValue)
+                    activity.DueDate = dto.DueDate;
+
+                if (!string.IsNullOrWhiteSpace(dto.CategoryId))
+                    activity.CategoryId = dto.CategoryId;
+
+                if (!string.IsNullOrWhiteSpace(dto.UserId))
+                    activity.CategoryId = dto.CategoryId;
+
+                if (dto.Status != null)
+                    activity.Status = dto.Status ?? TaskStatusEnum.Pending;
+     
+                _respository.Update(id.ToString(), activity);
+            }
+            // se tiver uma task, continuar processo de edit
+            // validar se cada prop do dto tem valor, se a prop tiver valor, alterar o activity
+
+
             //REFATORADO    
         }
         
