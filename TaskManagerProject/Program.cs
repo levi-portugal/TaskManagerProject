@@ -20,7 +20,6 @@ class Program
 
         services.AddSingleton(new MongoContext(connectionString, databaseName));
 
-        // 3. Registrar o Repositório Genérico para a Entidade Product
         // Note que passamos o nome da coleção "produtos" aqui
         services.AddScoped<IRepository<Activity>>(sp =>
             new Repository<Activity>(

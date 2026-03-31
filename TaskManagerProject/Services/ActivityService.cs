@@ -171,5 +171,23 @@ namespace TaskManagerProject.Services
             ShowActivities(result);
             //REFATORADO
         }
+
+        public ActivityResponseDto GetById(string id)
+        {
+            var a = _respository.GetById(id.ToString());
+            if (a == null) return null;
+
+            return new ActivityResponseDto
+            {
+                Id = a.Id,
+                Title = a.Title,
+                Description = a.Description,
+                DateOfCriation = a.DateOfCriation,
+                DueDate = a.DueDate,
+                Status = a.Status,
+                CategoryId = a.CategoryId,
+                UserId = a.UserId
+            };
+        }
     }   
 }  

@@ -40,7 +40,7 @@ namespace TaskManagerProject.Data.Repositories
         public void Delete(string id)
         {
             _collection.DeleteOne(
-                Builders<T>.Filter.Eq("Id", id)
+                Builders<T>.Filter.Eq("_id", id)
             );
         }
     }

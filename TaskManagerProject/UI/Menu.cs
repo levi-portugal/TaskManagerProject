@@ -8,17 +8,21 @@ namespace TaskManagerProject.UI
     {
         public CategoryMenu CategoryMenu { get; set; } //Mudar para injeão
         public ActivityMenu ActivityMenu;// mudar para injeção
-        public UserMenu UserMenu { get; set; } //mudar para injeção
+        public UserMenu UserMenu { get; set; }
+        public UserService UserService { get; set; } //mudar para injeção
 
         private readonly IActivityService _activityService;
         private readonly ICategoryService _categoryService;
+        private readonly IUserService _userService;
 
-        public Menu(IActivityService activityService, ICategoryService categoryService)
+        public Menu(IActivityService activityService, ICategoryService categoryService, IUserService userService)
         {
             _activityService = activityService;
             _categoryService = categoryService;
+            _userService = userService;
             ActivityMenu = new ActivityMenu(_activityService);
             CategoryMenu = new CategoryMenu(_categoryService);
+            UserMenu = new UserMenu(_userService);
         }
 
         public void ShowMenu()

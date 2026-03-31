@@ -9,5 +9,6 @@ namespace TaskManagerProject.Interfaces
         public void DeleteTask(string id);
         public List<ActivityResponseDto> GetAll();
         void FilterListTasks(); //Ver o pq não é pra isso ficar aqui
+        ActivityResponseDto GetById(string id);
     }
 }

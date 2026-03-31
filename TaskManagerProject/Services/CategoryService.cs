@@ -37,13 +37,8 @@ namespace TaskManagerProject.Services
 
         public void DeleteCategory(string id)
         {            
-            //Bug para resolver aqui
-            var activity = ListCategory().FirstOrDefault(i => i.CategoryId == id);
-
-            
             _repository.Delete(id.ToString());
-           
-            Thread.Sleep(1000);
+            Console.WriteLine("excluido com sucesso meu nobre");
             //Refatorado
         }
     }
