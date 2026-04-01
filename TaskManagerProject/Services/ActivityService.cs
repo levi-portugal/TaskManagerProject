@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
+﻿using System.Reflection.Metadata.Ecma335;
+using TaskManagerProject.Data.Repositories;
+using TaskManagerProject.DTOs.ActivityDTO;
 using TaskManagerProject.Entities;
 using TaskManagerProject.Entities.Enums;
 using TaskManagerProject.Helpers;
@@ -13,67 +10,81 @@ namespace TaskManagerProject.Services
 {
     public class ActivityService : IActivityService
     {
+        private readonly IRepository<Activity> _respository;
 
-        List<Activity> activities = new List<Activity>();
-
-        public void CreateActivity(string title, DateTime dueDate, TaskStatusEnum status, string description, string categoryId, string userId)
+        public ActivityService(IRepository<Activity> repository)
         {
-            ListActivity();
-
-            Activity activity = new Activity(title, dueDate, description, status, categoryId, userId);
-            activities.Add(activity);
-            TaskManagerProject.Helpers.JsonHelper.Convert(activities, "JsonFileTM.json");
+            _respository = repository;
         }
 
-        public bool DeleteTask(string id)
+        public void CreateActivity(ActivityRequestDto dto)
         {
-            Activity activitie = activities.Find(p => p.Id == id);
+            var activity = new Activity(dto.Title, dto.DueDate, dto.Description, dto.Status??TaskStatusEnum.Pending, dto.CategoryId, dto.UserId)
+            { };
 
-            if (activitie == null)
-            {
-                Console.WriteLine("Produto não encontrado.");
-                return false;
-            }
-            activities.Remove(activitie);
-            TaskManagerProject.Helpers.JsonHelper.Convert(activities, "JsonFileTM.json");
-
-            Console.WriteLine($"Produto '{activitie.Title}' removido com sucesso.");
-            return true;
+            _respository.Create(activity);
+            //REFATORADO
         }
 
-        public void EditTask(string id)
+        public List<ActivityResponseDto> GetAll()
         {
-            ListActivity();
+            var Activities = _respository.GetAll();
 
-            Activity activitie = activities.Find(p => p.Id == id);
-
-            Console.WriteLine($"O que deseja alterar na tarefa ?");
-            Console.WriteLine("Titulo - 1\nDescrição - 2\nStatus - 3");
-            int response = int.Parse(Console.ReadLine());
-
-            switch (response)
+            return Activities.Select(a => new ActivityResponseDto
             {
-                case 1:
-                    Console.Write("Digite o novo nome da tarefa: ");
-                    string newName = Console.ReadLine();
-                    activitie.EditName(newName);
-                    break;
-                case 2:
-                    Console.Write("Digite a nova descrição: ");
-                    string newDescription = Console.ReadLine();
-                    activitie.EditDescription(newDescription);
-                    break;
-                case 3:
-                    Console.Write("Qual o novo Status que deseja para a tarefa?");
-                    Console.WriteLine("\nPending = 1\nInProgress = 2\nCompleted = 3\nCanceled = 4\n");
-                    int newStatus = int.Parse(Console.ReadLine());
-                    activitie.EditStatus(newStatus);
-                    break;
-                default:
-                    Console.WriteLine("Essa opção não exite!");
-                    break;
+                Id = a.Id,
+                Title = a.Title,
+                Description = a.Description,
+                DateOfCriation = a.DateOfCriation,
+                DueDate = a.DueDate,
+                Status = a.Status,
+                CategoryId = a.CategoryId,
+                UserId = a.UserId
+            }).ToList();
+            //Refatorado
+        }
+
+        public void DeleteTask(string id)
+        {
+            _respository.Delete(id.ToString());
+            //refatorado
+        }
+
+        public void EditTask(string id, ActivityRequestDto dto)
+        {
+            /*
+            var activity = new Activity(dto.Title, dto.DueDate, dto.Description, dto.Status, dto.CategoryId, dto.UserId)
+            {};
+            */
+
+            var activity = _respository.GetById(id);
+            if (activity != null)
+            {
+                if (!string.IsNullOrWhiteSpace(dto.Title))
+                    activity.Title = dto.Title;
+
+                if (!string.IsNullOrWhiteSpace(dto.Description))
+                    activity.Description = dto.Description;
+
+                if (activity.DueDate != DateTime.MinValue)
+                    activity.DueDate = dto.DueDate;
+
+                if (!string.IsNullOrWhiteSpace(dto.CategoryId))
+                    activity.CategoryId = dto.CategoryId;
+
+                if (!string.IsNullOrWhiteSpace(dto.UserId))
+                    activity.CategoryId = dto.CategoryId;
+
+                if (dto.Status != null)
+                    activity.Status = dto.Status ?? TaskStatusEnum.Pending;
+     
+                _respository.Update(id.ToString(), activity);
             }
-            TaskManagerProject.Helpers.JsonHelper.Convert(activities, "JsonFileTM.json");
+            // se tiver uma task, continuar processo de edit
+            // validar se cada prop do dto tem valor, se a prop tiver valor, alterar o activity
+
+
+            //REFATORADO    
         }
         
         public void FilterListTasks()
@@ -108,18 +119,18 @@ namespace TaskManagerProject.Services
                 default:
                     Console.WriteLine("Essa opção não existe!");
                     break;
-            }         
+            }      
+            //REFATORADO
         }
 
         private void FilterByCategory()
         {
-            ListActivity();
-
-            var result = activities.OrderBy(x => x.CategoryId).ToList();
+            var result = GetAll().OrderBy(x => x.CategoryId).ToList();
             ShowActivities(result);
+            //REFATORADO
         }
 
-        private void ShowActivities(List<Activity> result)
+        private void ShowActivities(List<ActivityResponseDto> result)
         {
             if (result.Count == 0)
                 Console.WriteLine("não encontrado");
@@ -128,54 +139,55 @@ namespace TaskManagerProject.Services
                 ExitToMenuHelper.GetTasks(task);
             }
             ExitToMenuHelper.Exit();
+            //REFATORADO
         }
 
         private void FilterByStatus()
         {
-            ListActivity();
-
-            var result = activities.OrderBy(x => x.Status).ToList();
+            var result = GetAll().OrderBy(x => x.Status).ToList();
 
             ShowActivities(result);
+            //REFATORADO
         }
 
         private void FilterByDueDate()
         {
-            ListActivity();
-
-            var result = activities
+            var result = GetAll()
             .OrderBy(x => Math.Abs((x.DueDate - DateTime.Now).TotalDays))
             .ToList();
 
             ShowActivities(result);
+            //REFATORADO
         }
 
         private void DelayedActivities()
         {
             Console.WriteLine("=== Tarefas atrsadas ===");
-            ListActivity();
 
-            var result = activities
+            var result = GetAll()
             .Where(x => (x.DueDate < DateTime.Now && x.Status != TaskStatusEnum.Completed))
             .ToList();
 
             ShowActivities(result);
+            //REFATORADO
         }
 
-        private void GetAll()
+        public ActivityResponseDto GetById(string id)
         {
-            foreach (var task in ListActivity())
+            var a = _respository.GetById(id.ToString());
+            if (a == null) return null;
+
+            return new ActivityResponseDto
             {
-                ExitToMenuHelper.GetTasks(task);
-            }
-            ExitToMenuHelper.Exit();
-        }
-
-        public List<Activity> ListActivity()
-        {
-             activities = TaskManagerProject.Helpers.JsonHelper.Deconvert<List<Activity>>("JsonFileTM.json")
-                  ?? new List<Activity>();
-             return activities;
+                Id = a.Id,
+                Title = a.Title,
+                Description = a.Description,
+                DateOfCriation = a.DateOfCriation,
+                DueDate = a.DueDate,
+                Status = a.Status,
+                CategoryId = a.CategoryId,
+                UserId = a.UserId
+            };
         }
     }   
 }  

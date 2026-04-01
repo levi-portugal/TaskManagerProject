@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
+﻿using MongoDB.Bson.Serialization.Attributes;
 using System.Text.Json.Serialization;
 using TaskManagerProject.Entities.Enums;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace TaskManagerProject.Entities
 {
     public class Activity
@@ -18,6 +12,8 @@ namespace TaskManagerProject.Entities
         public TaskStatusEnum Status { get; set; }
         public string? CategoryId { get; set; }
         public string? UserId { get; set; }
+
+        [BsonId]
         public string Id { get; set; }
 
         public Activity(string title, DateTime dueDate,
@@ -44,11 +40,10 @@ namespace TaskManagerProject.Entities
                 throw new ArgumentException();
             }        
         }
-
-        [JsonConstructor]
+        
         public Activity()
         { }
-
+        
         public void EditName(string name)
         {
             Title = name;

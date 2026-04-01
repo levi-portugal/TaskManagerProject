@@ -1,30 +1,28 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Xml.Linq;
-using TaskManagerProject.Entities;
-using TaskManagerProject.Entities.Enums;
+﻿using System.ComponentModel.Design;
+using TaskManagerProject.Interfaces;
 using TaskManagerProject.Services;
 
 namespace TaskManagerProject.UI
 {
     public class Menu
     {
-        public ActivityService ActivityService { get; set; }
-        public CategoryService CategoryService { get; set; }
-        public UserService UserService { get; set; }
-        public CategoryMenu CategoryMenu { get; set; }
-        public ActivityMenu ActivityMenu { get; set; }
+        public CategoryMenu CategoryMenu { get; set; } //Mudar para injeão
+        public ActivityMenu ActivityMenu;// mudar para injeção
         public UserMenu UserMenu { get; set; }
+        public UserService UserService { get; set; } //mudar para injeção
 
-        public Menu()
+        private readonly IActivityService _activityService;
+        private readonly ICategoryService _categoryService;
+        private readonly IUserService _userService;
+
+        public Menu(IActivityService activityService, ICategoryService categoryService, IUserService userService)
         {
-           ActivityService = new ActivityService();
-           ActivityMenu = new ActivityMenu();
-           CategoryMenu = new CategoryMenu();
-           UserMenu = new UserMenu();
+            _activityService = activityService;
+            _categoryService = categoryService;
+            _userService = userService;
+            ActivityMenu = new ActivityMenu(_activityService);
+            CategoryMenu = new CategoryMenu(_categoryService);
+            UserMenu = new UserMenu(_userService);
         }
 
         public void ShowMenu()
@@ -58,7 +56,7 @@ namespace TaskManagerProject.UI
                         ActivityMenu.MenuCreateTask();
                         break;
                     case 2:
-                        ActivityService.FilterListTasks();
+                        _activityService.FilterListTasks(); //mudar
                         break;
                     case 3:
                         ActivityMenu.MenuEditTask();                      

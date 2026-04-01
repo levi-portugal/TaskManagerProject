@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MongoDB.Bson.Serialization.Attributes;
 using TaskManagerProject.Entities.Enums;
 
 namespace TaskManagerProject.Entities
@@ -9,6 +7,8 @@ namespace TaskManagerProject.Entities
     {
         public string Name { get; set; }
         public CategoryColor Color { get; set; }
+
+        [BsonId]
         public string CategoryId { get; set; }
 
         public Category() {  }

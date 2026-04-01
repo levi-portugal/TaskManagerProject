@@ -1,23 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TaskManagerProject.Services;
+﻿using TaskManagerProject.DTOs.UserDto;
+using TaskManagerProject.Interfaces;
 
 namespace TaskManagerProject.UI
 {
     public class UserMenu
     {
-        public UserService UserService { get; set; }
+        private readonly IUserService _userService;
 
-        public UserMenu()
+        public UserMenu(IUserService userService)
         {
-            UserService = new UserService();
+            _userService = userService;
         }
 
         public void ShowUserMenu()
         {     
             Console.WriteLine("==== Usuários ====\n");
-            foreach (var user in UserService.ListUser())
+            foreach (var user in _userService.ListUser())
             {
                 Console.WriteLine("==================================");
                 Console.WriteLine($"Nome do usuário: {user.Name}");
@@ -25,7 +23,7 @@ namespace TaskManagerProject.UI
                 Console.WriteLine($"Id do usuário: {user.UserId}");
                 Console.WriteLine("==================================");
             }
-            if (UserService.ListUser().Count == 0)
+            if (_userService.ListUser().Count == 0)
             {
                 Console.WriteLine("Nenhum usuário resgistrado\n");
                 Console.WriteLine("==================================");
@@ -57,7 +55,16 @@ namespace TaskManagerProject.UI
             Console.Write("Digite o email do usuário: ");
             string email = Console.ReadLine();
 
-            UserService.CreateUser(name, email);
+            var newDto = new UserRequestDto
+            {
+                Name = name,
+                Email = email
+            };
+
+            _userService.CreateUser(newDto);
+            Console.WriteLine("Usuário criado com sucesso");
+            Thread.Sleep(1000);
+            //refatorado
         }
     }
 }

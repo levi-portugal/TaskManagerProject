@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TaskManagerProject.Entities;
-using TaskManagerProject.Entities.Enums;
+﻿using TaskManagerProject.DTOs.CategoryDto;
 
 namespace TaskManagerProject.Interfaces
 {
-    internal interface ICategoryService
+    public interface ICategoryService
     {
-        public void CreateCategory(string name, CategoryColor color);
-        public List<Category> ListCategory();
-        public bool DeleteCategory(string id);
+        public void CreateCategory(CategoryRequestDto dto);
+        public List<CategoryResponseDto> ListCategory();
+        public void DeleteCategory(string id);
     }
 }
