@@ -20,10 +20,21 @@ string databaseName = "TaskManager";
 
 builder.Services.AddSingleton(new MongoContext(connectionString, databaseName));
 
+//Ativity
 builder.Services.AddScoped<IRepository<Activity>>(sp =>
     new Repository<Activity>(sp.GetRequiredService<MongoContext>(), "Activities"));
 
 builder.Services.AddScoped<IActivityService, ActivityService>();
+//Category
+builder.Services.AddScoped<IRepository<Category>>(sp =>
+    new Repository<Category>(sp.GetRequiredService<MongoContext>(), "Categories"));
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+//User
+builder.Services.AddScoped<IRepository<User>>(sp =>
+    new Repository<User>(sp.GetRequiredService<MongoContext>(), "Users"));
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
